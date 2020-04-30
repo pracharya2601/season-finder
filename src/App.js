@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import SeasonDisplay from './SeasonDisplay';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends React.Component {
+    // constructor(props) {
+    //     super(props);
+    //     //initialize the state 
+    //     this.state = {
+    //         lat: null,
+    //         errorMessage: '' //lat id the short form of latitude
+    //     };
+    // }
+    state = {
+        lat: null,
+        errorMessage: ''
+    };
+
+    componentDidMount() {
+        window.navigator.geolocation.getCurrentPosition(
+            position => this.setState({lat: position.coords.latitude}),
+            err => this.setState({errorMessage: err.message})
+        );
+    }
+
+
+
+    //requirement for react
+    render() {
+        return(
+            <div>
+                <SeasonDisplay lat={this.state.lat} />
+                <br />
+                Error: {this.state.errorMessage}
+            </div>
+        );
+    }
 }
+
 
 export default App;
