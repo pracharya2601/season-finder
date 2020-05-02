@@ -1,16 +1,9 @@
 import React from "react";
 import SeasonDisplay from './SeasonDisplay';
+import Loder from './Loader';
 
 
 class App extends React.Component {
-    // constructor(props) {
-    //     super(props);
-    //     //initialize the state 
-    //     this.state = {
-    //         lat: null,
-    //         errorMessage: '' //lat id the short form of latitude
-    //     };
-    // }
     state = {
         lat: null,
         errorMessage: ''
@@ -22,18 +15,27 @@ class App extends React.Component {
             err => this.setState({errorMessage: err.message})
         );
     }
-
+    
+    //helper function
+    renderContent() {
+        if (this.state.errorMessage && !this.state.lat) {
+            return <div>Error: {this.state.errorMessage}</div> ;
+        }
+        if (!this.state.errorMessage && this.state.lat) {
+            return <div><SeasonDisplay lat={this.state.lat} /></div>;
+        }
+        
+        return <div><Loder message="Please Accept location request" /></div>
+    }
 
 
     //requirement for react
     render() {
-        return(
-            <div>
-                <SeasonDisplay lat={this.state.lat} />
-                <br />
-                Error: {this.state.errorMessage}
+        return (
+            <div className="border">
+                {this.renderContent()}
             </div>
-        );
+        )
     }
 }
 
